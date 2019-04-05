@@ -29,7 +29,7 @@ client.on('message', message => {
 });
 
 if (result.error) {
-	throw error;
+	throw result.error;
 } else {
 	client.login(process.env.DISCORD_BOT_TOKEN);
 }
