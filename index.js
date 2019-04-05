@@ -1,0 +1,35 @@
+//original starter code from the Azure docs:
+//https://github.com/Azure-Samples/nodejs-docs-hello-world
+const http = require('http');
+
+const server = http.createServer((request, response) => {
+	response.writeHead(200, {"Content-Type": "text/plain"});
+	response.end("This website is solely for hosting SourBot.");
+});
+
+const port = process.env.PORT || 1337;
+server.listen(port);
+
+console.log("Server running at http://localhost:%d", port);
+
+//My code
+const result = require('dotenv').config();
+const discord = require('discord.js');
+const client = new discord.Client();
+
+client.on('ready', () => {
+	console.log(`Ready! Logged in as ${client.user.tag}.`);
+});
+
+client.on('message', message => {
+	if (message.content.includes('ping')){
+		message.reply('Pong!');
+		console.log(`Ponged ${message.author.username}.`);
+	}
+});
+
+if (result.error) {
+	throw error;
+} else {
+	client.login(process.env.DISCORD_BOT_TOKEN);
+}

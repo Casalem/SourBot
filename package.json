@@ -1,0 +1,15 @@
+{
+	"name": "SourBot",
+	"description": "Dictionary bot for Discord",
+	"version": "0.0.1",
+	"private": true,
+	"license": "MIT",
+	"author": "Casalem",
+	"scripts": {
+		"start": "node index.js"
+	},
+	"dependencies": {
+		"discord.js": "^11.4.2",
+		"dotenv": "^7.0.0"
+	}
+}
