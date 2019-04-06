@@ -24,12 +24,14 @@ client.on('ready', () => {
 client.on('message', message => {
 	if (message.content.includes('ping')){
 		message.reply('Pong!');
-		console.log(`Ponged ${message.author.username}.`);
+		console.log(`Ponged ${message.author.tag}.`);
 	}
 });
 
 if (result.error) {
+	console.log("An error occurred while loading .env:");
 	throw result.error;
 } else {
+	console.log("Logging in...");
 	client.login(process.env.DISCORD_BOT_TOKEN);
 }
