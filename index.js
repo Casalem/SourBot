@@ -14,6 +14,7 @@ console.log("Server running at http://localhost:%d", port);
 
 //My code
 const result = require('dotenv').config();
+const config = require('./config.json');
 const discord = require('discord.js');
 const client = new discord.Client();
 
@@ -22,8 +23,8 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-	if (message.content.includes('ping')){
-		message.reply('Pong!');
+	if (message.content.startsWith(`${config.prefix} ping`)){
+		message.channel.send('Pong!');
 		console.log(`Ponged ${message.author.tag}.`);
 	}
 });
