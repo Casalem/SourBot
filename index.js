@@ -15,17 +15,39 @@ console.log("Server running at http://localhost:%d", port);
 //My code
 const result = require('dotenv').config();
 const config = require('./config.json');
+const fs = require('fs');
 const discord = require('discord.js');
 const client = new discord.Client();
+
+client.commands = new discord.Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.name, command);
+}
 
 client.on('ready', () => {
 	console.log(`Ready! Logged in as ${client.user.tag}.`);
 });
 
 client.on('message', message => {
-	if (message.content.startsWith(`${config.prefix} ping`)){
-		message.channel.send('Pong!');
-		console.log(`Ponged ${message.author.tag}.`);
+	if (!message.content.startsWith(config.prefix) || message.author.bot) return;
+
+	//slice is basically substring(). '/ +/' matches 1 or more spaces
+	const args = message.content.slice(config.prefix).split(/ +/);
+	//shift() returns and takes out the first element of an array
+	args.shift(); //gets rid of prefix
+	const command = args.shift().toLowerCase();
+
+	if (!client.commands.has(command)) return;
+
+	try {
+		client.commands.get(command).execute(message, args);
+	} catch (error) {
+		message.channel.send('An error occurred while trying to run that.');
+		console.log(`An error occurred while trying to run '${command}':`);
+		console.error(error);
 	}
 });
 
