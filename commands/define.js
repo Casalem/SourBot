@@ -1,14 +1,22 @@
 module.exports = {
 	name: "define",
+	usage: "!sour define <word> [-h|--help]",
+	description: "Defines <word> through a lookup service. At the moment, only google is supported.",
 	dictionaries: {
 		"google": ["Google", "https://googledictionaryapi.eu-gb.mybluemix.net/?lang=en&define="]
 	},
 	execute(message, args){
 		if (!args.length) {
-			message.channel.send('Error: not enough arguments.');
+			message.channel.send('Error: not enough arguments. Provide a word or try "!sour define --help"');
+			return;
 		}
 
 		if (args.length === 1) {
+			if (args[0] === "-h" || args[0] === "--help") {
+				message.channel.send("Usage: " + this.usage + '\n' + this.description);
+				return;
+			}
+
 			//default to Google
 			console.log(`Looking up '${args[0]}' through ${this.dictionaries.google[0]}...`);
 			getJSON(this.dictionaries.google[1] + args[0], (error, data) => {
