@@ -18,9 +18,30 @@ module.exports = {
 				} else {
 					let json = JSON.parse(data);
 					console.log('Data received:');
-					console.log(json[0]);
+					console.log(json);
+					message.channel.send(define(json));
 				}
 			});
+		}
+
+		function define(data){
+			let message = '';
+			data.forEach(element => {
+				message += `Definition of '${element.word}':\n`;
+
+				for (const wordType in element.meaning) {
+					message += `(${wordType.toUpperCase()})\n`;
+					for (let i = 0; i < element.meaning[wordType].length; i++) {
+						let info = element.meaning[wordType][i];
+						message += `    ${i+1}. ${info.definition}\n`;
+						if (info.example)
+							message += `    Example: ${info.example}\n`;
+						message += '\n';
+					}
+				}
+			});
+
+			return message;
 		}
 
 		function getJSON(url, callback) {
